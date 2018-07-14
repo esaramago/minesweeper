@@ -11,6 +11,19 @@
     
     <div id="grid" class="c-grid has-9-rows"></div>
 
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD--GjWpLl99QDGnuMYSot60ojfomYSAdU",
+            authDomain: "game-minesweeper.firebaseapp.com",
+            databaseURL: "https://game-minesweeper.firebaseio.com",
+            projectId: "game-minesweeper",
+            storageBucket: "",
+            messagingSenderId: "161075270256"
+        };
+        firebase.initializeApp(config);
+    </script>
     <script src="src/js/main.js"></script>
 </body>
 </html>
