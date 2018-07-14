@@ -4,27 +4,28 @@ import '/src/css/main.scss';
 const Minesweeper = {
 
     // constants
-    mines: 2,
+    minesNumber: 15,
     gridRows: 9,
     longPress: false,
-    longPressTime: 500,
+    longPressTime: 400,
     delay: null,
 
     // variables
     isLost: false,
     isWon: false,
     revealedCells: 0,
+    mines: [],
     grid: [],
 
 
     init() {
 
+        this.setMines();
         this.setGrid();
+
         this.renderGrid();
-        console.log(this.grid);
 
         var grid = document.getElementById('grid');
-
         grid.addEventListener('mousedown', this.onPressCell.bind(this));
         grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
         /* document.addEventListener('contextmenu', (e) => {
@@ -32,18 +33,34 @@ const Minesweeper = {
         }); */
 
     },
+
+    // Set
+    setMines() {
+
+        // add random mines
+        var min = 0;
+        var max = this.gridRows - 1;
+        for (let i = 0; i < this.minesNumber; i++) {
+            var row = _randomIntFromInterval(min, max)
+            var col = _randomIntFromInterval(min, max)
+            this.mines.push({
+                row: row,
+                col: col
+            });
+        }
+
+        function _randomIntFromInterval(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+    },
     setGrid() {
 
         for (let row = 0; row < this.gridRows; row++) {
             
             var cells = [];
             for (let cell = 0; cell < this.gridRows; cell++) {
-                
-                var hasMine = false;
-                if (row === 0 && cell === 2 || row === 1 && cell === 1) {
-                    hasMine = true;
-                }
 
+                var hasMine = this.mines.findIndex(x => x.row === row && x.col === cell) > -1;
                 cells.push({
                     hasMine: hasMine,
                     number: 0
@@ -51,7 +68,6 @@ const Minesweeper = {
             }
             this.grid.push(cells);
         }
-
     },
     setPositions(row, col) {
 
@@ -101,53 +117,9 @@ const Minesweeper = {
                 this.grid[rowPos][colPos].number++;
             }
         }
-    },  
-
-    onPressCell(e) {
-        this.longPress = false;
-        this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
-
-        function toggleFlag(btn) {
-            this.longPress = true;
-            btn.classList.toggle('has-flag');
-        }
-    },
-    onLeaveCell(e) {
-
-        if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
-
-            this.revealCell(e.target);
-
-            if (this.isLost) {
-
-                document.getElementById('grid').querySelectorAll('button').forEach(e => {
-                    this.revealCell(e);
-                });
-
-                _disableGrid();
-                alert('Perdeste!');
-            }
-            else {
-                this.revealedCells++; // add one revealed cell
-                var totalCells = this.gridRows * this.gridRows; // get number of cells
-                var notrevealedCells = totalCells - this.mines - this.revealedCells;
-
-                if (notrevealedCells === 0) {
-                    this.isWon = true;
-                    _disableGrid();
-                    alert('Ganhaste!!!');
-                }
-            }
-        }
-
-        function _disableGrid() {
-            document.getElementById('grid').classList.add('is-disabled');
-        }
-
-        clearTimeout(this.delay);
     },
 
-
+    // render
     revealCell(btn) {
 
         var row = btn.dataset.row;
@@ -201,6 +173,50 @@ const Minesweeper = {
 
         document.getElementById('grid').innerHTML = html;
 
-    }
+    },
+
+    // events
+    onPressCell(e) {
+        this.longPress = false;
+        this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
+
+        function toggleFlag(btn) {
+            this.longPress = true;
+            btn.classList.toggle('has-flag');
+        }
+    },
+    onLeaveCell(e) {
+
+        if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
+
+            this.revealCell(e.target);
+
+            if (this.isLost) {
+
+                document.getElementById('grid').querySelectorAll('button').forEach(e => {
+                    this.revealCell(e);
+                });
+
+                _disableGrid();
+                alert('Perdeste!');
+            }
+            else {
+                this.revealedCells++; // add one revealed cell
+                var totalCells = this.gridRows * this.gridRows; // get number of cells
+                var notRevealedCells = totalCells - this.minesNumber - this.revealedCells;
+                if (notRevealedCells === 0) {
+                    this.isWon = true;
+                    _disableGrid();
+                    alert('Ganhaste!!!');
+                }
+            }
+        }
+
+        function _disableGrid() {
+            document.getElementById('grid').classList.add('is-disabled');
+        }
+
+        clearTimeout(this.delay);
+    },
 }
 Minesweeper.init();
