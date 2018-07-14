@@ -1,0 +1,38 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+button {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+
+
+$border: 1px solid #000;
+.c-grid {
+    display: grid;
+    max-width: 300px;
+    margin: auto;
+    border-top: $border;
+    border-left: $border;
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 1fr);
+}
+.c-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: $border;
+    border-bottom: $border;
+    background-color: #EEE;
+
+    &[disabled] {
+        pointer-events: none;
+    }
+    &.is-revealed {
+        background-color: #FFF;
+    }
+    &.has-mine {
+        background-color: red;
+    }
+}
