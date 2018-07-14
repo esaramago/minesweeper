@@ -3,88 +3,51 @@ import '/src/css/main.scss';
 
 const Minesweeper = {
 
+    // constants
+    mines: 2,
+    gridRows: 9,
+
+    // variables
     isLost: false,
     isWon: false,
-
-    mines: 2,
     revealedCells: 0,
-    gridRows: 3,
-    grid: [
-        {
-            row: [
-                {
-                    cell: {
-                        hasMine: false,
-                        number: 0,
-                        row: 1
-                    }
-                },
-                {
-                    cell: {
-                        hasMine: false,
-                        number: 0,
-                        row: 1
-                    }
-                },
-                {
-                    cell: {
-                        hasMine: true,
-                        number: 0,
-                        row: 1
-                    }
+    grid: [],
+
+
+    init() {
+
+        this.setGrid();
+        this.renderGrid();
+        console.log(this.grid);
+
+        document.getElementById('grid').addEventListener('click', this.onClickCell.bind(this));
+
+    },
+    setGrid() {
+
+        for (let row = 0; row < this.gridRows; row++) {
+            var cells = [];
+
+            for (let cell = 0; cell < this.gridRows; cell++) {
+                
+                var hasMine = false;
+                if (row === 0 && cell === 2 || row === 1 && cell === 1) {
+                    hasMine = true;
                 }
-            ]
-        },
-        {
-            row: [
-                {
+
+                cells.push({
                     cell: {
-                        hasMine: false,
-                        number: 0,
-                        row: 2
-                    }
-                },
-                {
-                    cell: {
-                        hasMine: true,
-                        number: 0,
-                        row: 2
-                    }
-                },
-                {
-                    cell: {
-                        hasMine: false,
-                        number: 0,
-                        row: 2
-                    }
-                }
-            ]
-        },
-        {
-            row: [
-                {
-                    cell: {
-                        hasMine: false,
+                        hasMine: hasMine,
                         number: 0
                     }
-                },
-                {
-                    cell: {
-                        hasMine: false,
-                        number: 0
-                    }
-                },
-                {
-                    cell: {
-                        hasMine: false,
-                        number: 0
-                    }
-                }
-            ]
+                });
+            }
+            this.grid.push({
+                row: cells
+            });
         }
 
-    ],
-
+    },
     setPositions(row, col) {
 
         var positions = [
@@ -135,15 +98,6 @@ const Minesweeper = {
         }
     },
 
-    init() {
-        
-        this.renderGrid();
-        console.log(this.grid);
-        //this.renderGrid();
-
-        document.getElementById('grid').addEventListener('click', this.onClickCell.bind(this));
-
-    },
     onClickCell(e) {
 
         if (e.target.matches('button')) {
@@ -156,6 +110,7 @@ const Minesweeper = {
                     this.revealCell(e);
                 });
 
+                _disableGrid();
                 alert('Perdeste!');
             }
             else {
@@ -165,9 +120,14 @@ const Minesweeper = {
 
                 if (notrevealedCells === 0) {
                     this.isWon = true;
+                    _disableGrid();
                     alert('Ganhaste!!!');
                 }
             }
+        }
+
+        function _disableGrid() {
+            document.getElementById('grid').classList.add('is-disabled');
         }
     },
     revealCell(btn) {

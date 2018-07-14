@@ -1,10 +1,20 @@
+html {
+    font-size: 62.5%;
+}
 body {
     font-family: 'Segoe UI', sans-serif;
+    font-size: 1.6rem;
 }
 button {
     padding: 0;
     background-color: transparent;
     border: none;
+    font-size: inherit;
+}
+
+@mixin grid($rows) {
+    grid-template-columns: repeat($rows, 1fr);
+    grid-template-rows: repeat($rows, 300px/$rows);
 }
 
 
@@ -15,8 +25,16 @@ $border: 1px solid #000;
     margin: auto;
     border-top: $border;
     border-left: $border;
-    grid-template-rows: repeat(3, 100px);
-    grid-template-columns: repeat(3, 1fr);
+    font-size: 25px;
+
+    &.is-disabled {
+        button {
+            pointer-events: none;
+        }
+    }
+    &.has-9-rows {
+        @include grid(9);
+    }
 }
 .c-cell {
     display: flex;
@@ -24,6 +42,7 @@ $border: 1px solid #000;
     justify-content: center;
     border-right: $border;
     border-bottom: $border;
+    background-color: #EEE;
 
     &[disabled] {
         pointer-events: none;
@@ -33,5 +52,6 @@ $border: 1px solid #000;
     }
     &.has-mine {
         background-color: red;
+        color: #FFF;
     }
 }
