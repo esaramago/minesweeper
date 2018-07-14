@@ -24,7 +24,6 @@ $border: 1px solid #000;
     justify-content: center;
     border-right: $border;
     border-bottom: $border;
-    background-color: #EEE;
 
     &[disabled] {
         pointer-events: none;

@@ -1,1 +1,3 @@
 * Minesweeper
+
+parcel index.html
