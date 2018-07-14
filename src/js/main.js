@@ -6,6 +6,9 @@ const Minesweeper = {
     // constants
     mines: 2,
     gridRows: 9,
+    longPress: false,
+    longPressTime: 500,
+    delay: null,
 
     // variables
     isLost: false,
@@ -20,14 +23,20 @@ const Minesweeper = {
         this.renderGrid();
         console.log(this.grid);
 
-        document.getElementById('grid').addEventListener('click', this.onClickCell.bind(this));
+        var grid = document.getElementById('grid');
+
+        grid.addEventListener('mousedown', this.onPressCell.bind(this));
+        grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
+        /* document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        }); */
 
     },
     setGrid() {
 
         for (let row = 0; row < this.gridRows; row++) {
+            
             var cells = [];
-
             for (let cell = 0; cell < this.gridRows; cell++) {
                 
                 var hasMine = false;
@@ -36,15 +45,11 @@ const Minesweeper = {
                 }
 
                 cells.push({
-                    cell: {
-                        hasMine: hasMine,
-                        number: 0
-                    }
+                    hasMine: hasMine,
+                    number: 0
                 });
             }
-            this.grid.push({
-                row: cells
-            });
+            this.grid.push(cells);
         }
 
     },
@@ -93,14 +98,23 @@ const Minesweeper = {
 
             //debugger
             if (rowPos > -1 & rowPos < this.gridRows && colPos > -1 && colPos < this.gridRows) {// check if cell is inside the grid
-                this.grid[rowPos].row[colPos].cell.number++;
+                this.grid[rowPos][colPos].number++;
             }
         }
+    },  
+
+    onPressCell(e) {
+        this.longPress = false;
+        this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
+
+        function toggleFlag(btn) {
+            this.longPress = true;
+            btn.classList.toggle('has-flag');
+        }
     },
+    onLeaveCell(e) {
 
-    onClickCell(e) {
-
-        if (e.target.matches('button')) {
+        if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
 
             this.revealCell(e.target);
 
@@ -129,16 +143,19 @@ const Minesweeper = {
         function _disableGrid() {
             document.getElementById('grid').classList.add('is-disabled');
         }
+
+        clearTimeout(this.delay);
     },
+
+
     revealCell(btn) {
 
         var row = btn.dataset.row;
         var col = btn.dataset.col;
 
         var html = '';
-        var cell = this.grid[row].row[col].cell;
+        var cell = this.grid[row][col];
         if (cell.hasMine) {
-            html = this.renderCellContent('⚑');
             btn.classList.add('has-mine');
             this.isLost = true;
         }
@@ -161,11 +178,11 @@ const Minesweeper = {
 
         for (let row = 0; row < this.grid.length; row++) {
             var rowNr = row;
-            const cells = this.grid[row].row;
+            const cells = this.grid[row];
 
             for (let col = 0; col < cells.length; col++) {
                 var colNr = col;
-                const cell = cells[col].cell;
+                const cell = cells[col];
 
                 // set data
                 if (cell.hasMine) {
