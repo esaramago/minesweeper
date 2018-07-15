@@ -205,7 +205,6 @@ const Minesweeper = {
                 
                 _disableGrid();
                 document.body.classList.add('is-lost');
-                alert('Perdeste!');
             }
             else {
                 this.revealedCells++; // add one revealed cell
@@ -216,7 +215,6 @@ const Minesweeper = {
                     
                     _disableGrid();
                     document.body.classList.add('is-won');
-                    alert('Ganhaste!!!');
                 }
             }
         }
