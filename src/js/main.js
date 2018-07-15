@@ -24,9 +24,7 @@ const Minesweeper = {
         // events
         this.elements.grid.addEventListener('mousedown', this.onPressCell.bind(this));
         this.elements.grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
-        /* document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        }); */
+        //this.elements.grid.addEventListener('long-press', this.onToggleFlag.bind(this));
 
         this.elements.restart.addEventListener('click', this.onRestart.bind(this));
 
@@ -122,7 +120,6 @@ const Minesweeper = {
             var rowPos = pos.row(row);
             var colPos = pos.col(col);
 
-            //debugger
             if (rowPos > -1 & rowPos < this.gridRows && colPos > -1 && colPos < this.gridRows) {// check if cell is inside the grid
                 this.grid[rowPos][colPos].number++;
             }
@@ -194,8 +191,8 @@ const Minesweeper = {
         this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
 
         function toggleFlag(btn) {
-            this.longPress = true;
             btn.classList.toggle('has-flag');
+            this.longPress = true;
         }
     },
     onLeaveCell(e) {

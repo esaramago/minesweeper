@@ -1,7 +1,7 @@
 # PoopSweeper
 
-dev: parcel index.html
-prd: parcel build index.html --out-dir build
+* dev: npm run watch
+* prd: npm run build
 
-firebase serve --port 5001
-firebase deploy
+* firebase serve --port 5001
+* firebase deploy
