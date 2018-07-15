@@ -3,7 +3,7 @@
     "lang": "en",
     "name": "PoopSweeper",
     "scope": "/",
-    "display": "browser",
+    "display": "fullscreen",
     "start_url": ".",
     "short_name": "PoopSweeper",
     "theme_color": "#dfd4c3",

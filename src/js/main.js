@@ -178,7 +178,10 @@ const Minesweeper = {
         }
 
         function _renderCell(row, col) {
-            return `<button class="c-cell" data-col="${col}" data-row="${row}"></button>`;
+            return `
+                <button class="c-cell" data-col="${col}" data-row="${row}">
+                    <span class="is-visually-hidden">Hidden cell</span>
+                </button>`;
         }
 
         document.getElementById('grid').innerHTML = html;
