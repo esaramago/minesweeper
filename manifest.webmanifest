@@ -1,0 +1,19 @@
+{
+    "dir": "ltr",
+    "lang": "en",
+    "name": "PoopSweeper",
+    "scope": "/",
+    "display": "browser",
+    "start_url": ".",
+    "short_name": "PoopSweeper",
+    "theme_color": "#d4342e",
+    "description": "Minesweeper like game, but with poop emoji",
+    "orientation": "any",
+    "background_color": "transparent",
+    "icons": [
+        {
+            "src": "https://poopsweeper-game.firebaseapp.com/favicon.ccbe3787.png",
+            "sizes": "32x32"
+        }
+    ]
+}

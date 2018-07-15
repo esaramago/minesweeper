@@ -1,9 +1,18 @@
+
+// HEADINGS ========================================
 .c-heading-1 {
     margin-bottom: 1.5rem;
     font-size: 3.4rem;
     font-weight: 300;
 }
 
+
+
+// ICONS ========================================
+.c-icon-poop {
+    position: relative;
+    z-index: 1;
+}
 .c-icon-poop--lost {
     display: none;
 }
@@ -15,7 +24,26 @@
         display: inline;
     }
 }
+@keyframes won-animation {
+  0% {
+    transform: rotate(0deg) scale(1) translateY(0);
+  }
+  50% {
+    transform: rotate(160deg) scale(12) translateY(-30px);
+  }
+  100% {
+    transform: rotate(360deg) scale(1) translateY(0);
+  }
+}
+.is-won {
+    .c-icon-poop {
+        animation: won-animation 1.5s infinite;
+    }
+}
 
+
+
+// BUTTONS ========================================
 .c-btn {
     display: inline-block;
     height: 34px;
@@ -29,43 +57,41 @@
 .c-btn--restart {
     visibility: hidden;
 }
-.is-lost .c-btn--restart {
-    visibility: visible;
+.is-lost,
+.is-won {
+    .c-btn--restart {
+        visibility: visible;
+    }
 }
 
-@mixin grid($rows) {
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-}
-$border: 2px solid var(--color-bg);
 
+
+
+// GRID ========================================
 .c-grid {
+    --grid-border: 2px solid var(--color-bg);
+
     display: grid;
     width: 400px;
     height: 400px;
-    border-top: $border;
-    border-left: $border;
     font-size: 2.5rem;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(8, 1fr); // regenerated in js
+    grid-template-rows: repeat(8, 1fr); // regenerated in js
 
     &.is-disabled {
         button {
             pointer-events: none;
         }
     }
-    &.has-9-rows {
-        @include grid(9);
-    }
 
-    @media (max-width: 420px) {
-        width: 300px;
-        height: 300px;
+    @media (max-width: 480px) {
+        width: 350px;
+        height: 350px;
         font-size: 2rem;
     }
-    @media (max-width: 300px) {
-        width: 240px;
-        height: 240px;
+    @media (max-width: 359px) {
+        width: 300px;
+        height: 300px;
         font-size: 1.6rem;
     }
 }
@@ -73,8 +99,8 @@ $border: 2px solid var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: $border;
-    border-bottom: $border;
+    border-right: var(--grid-border);
+    border-bottom: var(--grid-border);
     background-color: #FFF;
     transition: all .1s;
 

@@ -10,10 +10,14 @@ const Minesweeper = {
 
     // constants
     minesNumber: 15,
-    gridRows: 9,
+    gridRows: 8,
     longPressTime: 400,
 
     init() {
+
+        // set grid styles
+        this.elements.grid.style.gridTemplateColumns = `repeat(${this.gridRows}, 1fr)`;
+        this.elements.grid.style.gridTemplateRows = `repeat(${this.gridRows}, 1fr)`;
 
         this.start();
 

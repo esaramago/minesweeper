@@ -6,6 +6,7 @@
     <title>Minesweeper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
     
@@ -32,15 +33,29 @@
     <script>
         // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyD--GjWpLl99QDGnuMYSot60ojfomYSAdU",
-            authDomain: "game-minesweeper.firebaseapp.com",
-            databaseURL: "https://game-minesweeper.firebaseio.com",
-            projectId: "game-minesweeper",
-            storageBucket: "",
-            messagingSenderId: "161075270256"
+            apiKey: "AIzaSyBRI0tmGF-A8FMMD1u1UuGtxdlTKP07MFA",
+            authDomain: "poopsweeper-game.firebaseapp.com",
+            databaseURL: "https://poopsweeper-game.firebaseio.com",
+            projectId: "poopsweeper-game",
+            storageBucket: "poopsweeper-game.appspot.com",
+            messagingSenderId: "818741478071"
         };
         firebase.initializeApp(config);
     </script>
+
+    <script>
+        if (navigator.serviceWorker.controller) {
+                console.log('[PWA Builder] active service worker found, no need to register')
+            } else {
+            //Register the ServiceWorker
+            navigator.serviceWorker.register('sw.js', {
+                scope: './'
+            }).then(function (reg) {
+                console.log('Service worker has been registered for scope:' + reg.scope);
+            });
+        }
+    </script>
+
     <script src="src/js/main.js"></script>
 </body>
 </html>
