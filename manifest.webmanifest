@@ -7,7 +7,7 @@
     "start_url": ".",
     "short_name": "PoopSweeper",
     "theme_color": "#dfd4c3",
-    "description": "Minesweeper like game, but with poop emoji",
+    "description": "Minesweeper's like game, but with poop emoji",
     "orientation": "any",
     "background_color": "transparent",
     "icons": [
