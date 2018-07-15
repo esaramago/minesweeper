@@ -1,37 +1,45 @@
 import '/src/css/main.scss';
 
-
 const Minesweeper = {
+
+    // elements
+    elements: {
+        grid: document.getElementById('grid'),
+        restart: document.querySelector('.js-restart'),
+    },
 
     // constants
     minesNumber: 15,
     gridRows: 9,
-    longPress: false,
     longPressTime: 400,
-    delay: null,
-
-    // variables
-    isLost: false,
-    isWon: false,
-    revealedCells: 0,
-    mines: [],
-    grid: [],
-
 
     init() {
 
-        this.setMines();
-        this.setGrid();
+        this.start();
 
-        this.renderGrid();
-
-        var grid = document.getElementById('grid');
-        grid.addEventListener('mousedown', this.onPressCell.bind(this));
-        grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
+        // events
+        this.elements.grid.addEventListener('mousedown', this.onPressCell.bind(this));
+        this.elements.grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
         /* document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         }); */
 
+        this.elements.restart.addEventListener('click', this.onRestart.bind(this));
+
+    },
+    start() {
+        // variables
+        this.delay = null;
+        this.longPress = false;
+        this.isLost = false;
+        this.isWon = false;
+        this.revealedCells = 0;
+        this.mines = [];
+        this.grid = [];
+
+        this.setMines();
+        this.setGrid();
+        this.renderGrid();
     },
 
     // Set
@@ -41,11 +49,9 @@ const Minesweeper = {
         var min = 0;
         var max = this.gridRows - 1;
         for (let i = 0; i < this.minesNumber; i++) {
-            var row = _randomIntFromInterval(min, max)
-            var col = _randomIntFromInterval(min, max)
             this.mines.push({
-                row: row,
-                col: col
+                row: _randomIntFromInterval(min, max),
+                col: _randomIntFromInterval(min, max)
             });
         }
 
@@ -196,8 +202,9 @@ const Minesweeper = {
                 document.getElementById('grid').querySelectorAll('button').forEach(e => {
                     this.revealCell(e);
                 });
-
+                
                 _disableGrid();
+                document.body.classList.add('is-lost');
                 alert('Perdeste!');
             }
             else {
@@ -206,17 +213,31 @@ const Minesweeper = {
                 var notRevealedCells = totalCells - this.minesNumber - this.revealedCells;
                 if (notRevealedCells === 0) {
                     this.isWon = true;
+                    
                     _disableGrid();
+                    document.body.classList.add('is-won');
                     alert('Ganhaste!!!');
                 }
             }
         }
 
+        clearTimeout(this.delay);
+
         function _disableGrid() {
             document.getElementById('grid').classList.add('is-disabled');
         }
 
-        clearTimeout(this.delay);
     },
+
+    onRestart() {
+        
+        this.elements.grid.classList.remove('is-disabled');
+        this.elements.grid.innerHTML = '';
+
+        document.body.classList.remove('is-lost');
+        document.body.classList.remove('is-won');
+
+        this.start();
+    }
 }
 Minesweeper.init();

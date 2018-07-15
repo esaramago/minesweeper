@@ -1,0 +1,28 @@
+html,
+body {
+    height: 100%;
+}
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+body {
+    min-width: 240px;
+    margin: 0;
+    background-color: var(--color-bg);
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1.6rem;
+}
+button {
+    width: auto;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    font-size: inherit;
+    &:focus {
+        outline: 0;
+    }
+}
+h1 {
+    margin: 0;
+}
