@@ -21,11 +21,15 @@ const Minesweeper = {
 
         this.start();
 
-        // events
+        // events for desktop
+        this.elements.grid.addEventListener('touchstart', this.onPressCell.bind(this));
+        this.elements.grid.addEventListener('touchend', this.onLeaveCell.bind(this));
+
+        // events for mobile
         this.elements.grid.addEventListener('mousedown', this.onPressCell.bind(this));
         this.elements.grid.addEventListener('mouseup', this.onLeaveCell.bind(this));
-        //this.elements.grid.addEventListener('long-press', this.onToggleFlag.bind(this));
 
+        // on restart event
         this.elements.restart.addEventListener('click', this.onRestart.bind(this));
 
     },
@@ -187,10 +191,12 @@ const Minesweeper = {
 
     // events
     onPressCell(e) {
+
         this.longPress = false;
         this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
 
         function toggleFlag(btn) {
+            debugger
             btn.classList.toggle('has-flag');
             this.longPress = true;
         }
