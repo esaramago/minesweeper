@@ -4,9 +4,21 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Minesweeper</title>
+    <meta name="Description" content="Author: esaramago, Category: Game">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#d4342e">
+    <meta name="msapplication-TileColor" content="#F2D500">
+    <link rel="icon" type="image/png" href="src/icons/favicon-32x32.png">
+
     <link rel="manifest" href="manifest.webmanifest">
+
+    <!-- icons -->
+    <meta name="msapplication-TileImage" content="src/icons/icon-192x192.png">
+    <link rel="icon" sizes="32x32" href="src/icons/favicon-32x32.png">
+    <link rel="icon" sizes="96x96" href="src/icons/icon-96x96.png">
+    <link rel="icon" sizes="192x192" href="src/icons/icon-192x192.png">
+    <link rel="icon" sizes="512x512" href="src/icons/icon-512x512.png">
 </head>
 <body>
     
@@ -43,19 +55,7 @@
         firebase.initializeApp(config);
     </script>
 
-    <script>
-        if (navigator.serviceWorker.controller) {
-                console.log('[PWA Builder] active service worker found, no need to register')
-            } else {
-            //Register the ServiceWorker
-            navigator.serviceWorker.register('sw.js', {
-                scope: './'
-            }).then(function (reg) {
-                console.log('Service worker has been registered for scope:' + reg.scope);
-            });
-        }
-    </script>
-
+    <script src="src/js/register-sw.js"></script>
     <script src="src/js/main.js"></script>
 </body>
 </html>

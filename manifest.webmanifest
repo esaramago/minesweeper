@@ -12,8 +12,20 @@
     "background_color": "transparent",
     "icons": [
         {
-            "src": "https://poopsweeper-game.firebaseapp.com/favicon.ccbe3787.png",
+            "src": "src/icons/icon-192x192.png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "src/icons/favicon-32x32.png",
             "sizes": "32x32"
+        },
+        {
+            "src": "src/icons/icon-96x96.png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "src/icons/icon-512x512.png",
+            "sizes": "512x512"
         }
     ]
 }
