@@ -6,7 +6,7 @@
     "display": "browser",
     "start_url": ".",
     "short_name": "PoopSweeper",
-    "theme_color": "#d4342e",
+    "theme_color": "#dfd4c3",
     "description": "Minesweeper like game, but with poop emoji",
     "orientation": "any",
     "background_color": "transparent",
