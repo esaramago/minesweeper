@@ -110,7 +110,7 @@
         pointer-events: none;
     }
     &.is-revealed {
-        opacity: .7;
+        background-color: #eae3d7;
     }
     &.has-flag {
         background-color: var(--color-flag);

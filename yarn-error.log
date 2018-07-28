@@ -2,7 +2,7 @@ Arguments:
   C:\Program Files\nodejs\node.exe C:\Users\Emanuel\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add cssnano -D
 
 PATH: 
-  C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;D:\Trabalho\www\apps\minesweeper\node_modules\.bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files\nodejs;C:\Program Files\Git\bin;C:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\Programas\adb-fastboot\platform-tools;C:\Program Files\Portugal Identity Card;C:\Program Files\nodejs\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Emanuel\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Emanuel\AppData\Local\Microsoft\WindowsApps;C:\Users\Emanuel\AppData\Roaming\npm;
+  C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;D:\Trabalho\www\apps\minesweeper\node_modules\.bin;C:\ProgramData\Oracle\Java\javapath;%PROGRAMFILES%\nodejs;%PROGRAMFILES%\Git\bin;%PROGRAMFILES%\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\Programas\adb-fastboot\platform-tools;C:\Program Files\Portugal Identity Card;C:\Program Files\nodejs\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\Emanuel\AppData\Local\Microsoft\WindowsApps;C:\Users\Emanuel\AppData\Local\Microsoft\WindowsApps;C:\Users\Emanuel\AppData\Roaming\npm
 
 Yarn version: 
   1.5.1
@@ -774,6 +774,10 @@ Lockfile:
     dependencies:
       os-homedir "^1.0.0"
       os-tmpdir "^1.0.0"
+  
+  parcel-plugin-bundle-manifest@^0.1.3:
+    version "0.1.3"
+    resolved "https://registry.yarnpkg.com/parcel-plugin-bundle-manifest/-/parcel-plugin-bundle-manifest-0.1.3.tgz#2e86a4a311c90d59ec67cec62530ea34196c7cd9"
   
   parse-json@^2.2.0:
     version "2.2.0"

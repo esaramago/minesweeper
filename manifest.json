@@ -1,0 +1,35 @@
+{
+    "dir": "ltr",
+    "lang": "en",
+    "name": "PoopSweeper",
+    "scope": "/",
+    "display": "fullscreen",
+    "start_url": ".",
+    "short_name": "PoopSweeper",
+    "theme_color": "#dfd4c3",
+    "description": "Minesweeper's like game, but with poop emoji",
+    "orientation": "any",
+    "background_color": "transparent",
+    "icons": [
+        {
+            "src": "src/icons/icon-192x192.png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "src/icons/favicon-32x32.png",
+            "sizes": "32x32"
+        },
+        {
+            "src": "src/icons/icon-96x96.png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "src/icons/icon-128x128.png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "src/icons/icon-512x512.png",
+            "sizes": "512x512"
+        }
+    ]
+}
