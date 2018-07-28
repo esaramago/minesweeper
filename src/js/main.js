@@ -14,7 +14,6 @@ const Minesweeper = {
     longPressTime: 400,
 
     init() {
-
         // set grid styles
         this.elements.grid.style.gridTemplateColumns = `repeat(${this.gridRows}, 1fr)`;
         this.elements.grid.style.gridTemplateRows = `repeat(${this.gridRows}, 1fr)`;
@@ -31,7 +30,7 @@ const Minesweeper = {
 
         // on restart event
         this.elements.restart.addEventListener('click', this.onRestart.bind(this));
-
+        
     },
     start() {
         // variables
@@ -196,7 +195,6 @@ const Minesweeper = {
         this.delay = setTimeout(toggleFlag.bind(this, e.target), this.longPressTime);
 
         function toggleFlag(btn) {
-            debugger
             btn.classList.toggle('has-flag');
             this.longPress = true;
         }

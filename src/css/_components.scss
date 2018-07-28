@@ -1,10 +1,15 @@
 
 // HEADINGS ========================================
 .c-heading-1 {
+    flex-grow: 1;
     font-size: 3.4rem;
     font-weight: 300;
+    text-align: center;
+    @media (max-width: 420px) {
+        //flex-grow: 0; // align left
+        font-size: 3rem;
+    }
 }
-
 
 
 // ICONS ========================================
