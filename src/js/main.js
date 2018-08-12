@@ -50,15 +50,38 @@ const Minesweeper = {
     // Set
     setMines() {
 
+        const that = this;
+
         // add random mines
         var min = 0;
         var max = this.gridRows - 1;
         for (let i = 0; i < this.minesNumber; i++) {
-            this.mines.push({
-                row: _randomIntFromInterval(min, max),
-                col: _randomIntFromInterval(min, max)
-            });
+            
+            _a();
         }
+
+        function _a() {
+            var row = _randomIntFromInterval(min, max);
+            var col = _randomIntFromInterval(min, max);
+
+            // check if is repeated
+            var isRepeated = that.mines.findIndex(x => {
+                return x.row == row && x.col == col
+            });
+
+            // push to array if is not repeated
+            if (isRepeated < 0) {
+                that.mines.push({
+                    row: row,
+                    col: col
+                });
+            }
+            else {
+                _a();
+            }
+        }
+
+        // ToDo: Se houver repetidos, gerar restantes
 
         function _randomIntFromInterval(min, max) {
             return Math.floor(Math.random() * (max - min + 1) + min);
@@ -247,3 +270,6 @@ const Minesweeper = {
     }
 }
 Minesweeper.init();
+
+// set Minesweeper global
+//window.Minesweeper = Minesweeper;
