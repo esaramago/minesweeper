@@ -21,8 +21,8 @@ const Minesweeper = {
         this.start();
 
         // events for desktop
-        this.elements.grid.addEventListener('touchstart', this.onPressCell.bind(this));
-        this.elements.grid.addEventListener('touchend', this.onLeaveCell.bind(this));
+        this.elements.grid.addEventListener('touchstart', this.onPressCell.bind(this), {passive: true});
+        this.elements.grid.addEventListener('touchend', this.onLeaveCell.bind(this), {passive: true});
 
         // events for mobile
         this.elements.grid.addEventListener('mousedown', this.onPressCell.bind(this));
