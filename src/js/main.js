@@ -2,16 +2,30 @@ import '/src/css/main.scss';
 
 const Minesweeper = {
 
+    // content
+    content: {
+        nextLevel: 'Next level',
+        restart: 'Restart',
+        hiddenCell: 'Hidden cell',
+    },
+
     // elements
     elements: {
         grid: document.getElementById('grid'),
         restart: document.querySelector('.js-restart'),
+        levelCurrent: document.querySelector('.js-level-current'),
+        levelBest: document.querySelector('.js-level-best'),
+        levelBestContainer: document.querySelector('.js-level-best-container'),
     },
 
     // constants
     minesNumber: 15,
     gridRows: 8,
     longPressTime: 400,
+
+    // levels
+    levelCurrent: 1,
+    levelBest: null,
 
     init() {
         // set grid styles
@@ -41,7 +55,9 @@ const Minesweeper = {
         this.revealedCells = 0;
         this.mines = [];
         this.grid = [];
+        this.levelBest = localStorage.getItem('levelBest');
 
+        this.renderLevels();
         this.setMines();
         this.setGrid();
         this.renderGrid();
@@ -56,11 +72,10 @@ const Minesweeper = {
         var min = 0;
         var max = this.gridRows - 1;
         for (let i = 0; i < this.minesNumber; i++) {
-            
-            _a();
+            _addMine();
         }
 
-        function _a() {
+        function _addMine() {
             var row = _randomIntFromInterval(min, max);
             var col = _randomIntFromInterval(min, max);
 
@@ -77,11 +92,9 @@ const Minesweeper = {
                 });
             }
             else {
-                _a();
+                _addMine(); // run function until mine position is not repeated
             }
         }
-
-        // ToDo: Se houver repetidos, gerar restantes
 
         function _randomIntFromInterval(min, max) {
             return Math.floor(Math.random() * (max - min + 1) + min);
@@ -179,6 +192,7 @@ const Minesweeper = {
 
     renderGrid() {
 
+        var _this = this;
         var html = '';
 
         for (let row = 0; row < this.grid.length; row++) {
@@ -203,12 +217,20 @@ const Minesweeper = {
         function _renderCell(row, col) {
             return `
                 <button class="c-cell" data-col="${col}" data-row="${row}">
-                    <span class="is-visually-hidden">Hidden cell</span>
+                    <span class="is-visually-hidden">${_this.content.hiddenCell}</span>
                 </button>`;
         }
 
         document.getElementById('grid').innerHTML = html;
 
+    },
+
+    renderLevels() {
+        this.elements.levelCurrent.textContent = this.levelCurrent;
+        if (this.levelBest) {
+            this.elements.levelBest.textContent = this.levelBest;
+            this.elements.levelBestContainer.removeAttribute('hidden');
+        }
     },
 
     // events
@@ -230,22 +252,40 @@ const Minesweeper = {
 
             if (this.isLost) {
 
+                // GAME LOST :(
+
                 document.getElementById('grid').querySelectorAll('button').forEach(e => {
                     this.revealCell(e);
                 });
                 
                 _disableGrid();
+                this.elements.restart.textContent = this.content.restart; // set restart text
                 document.body.classList.add('is-lost');
+
+                
+                this.levelCurrent = 1; // back to level 1
+                
             }
             else {
                 this.revealedCells++; // add one revealed cell
                 var totalCells = this.gridRows * this.gridRows; // get number of cells
                 var notRevealedCells = totalCells - this.minesNumber - this.revealedCells;
                 if (notRevealedCells === 0) {
+
+                    // GAME WON!!!
                     this.isWon = true;
                     
                     _disableGrid();
+                    this.elements.restart.textContent = this.content.nextLevel; // set restart text
                     document.body.classList.add('is-won');
+
+                    // save level in localstorage
+                    if (this.levelCurrent > this.levelBest) {
+                        this.levelBest = this.levelCurrent;
+                        localStorage.setItem('levelBest', this.levelCurrent);
+                    }
+                    ++this.levelCurrent;
+
                 }
             }
         }

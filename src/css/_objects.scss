@@ -8,14 +8,17 @@
 .o-header {
     position: relative;
     display: flex;
-    //justify-content: space-between;
-    align-items: flex-end;
+    box-sizing: content-box;
+    width: 100%;
+    max-width: var(--content-width);
     padding: 0 var(--gap-sm);
+    margin: auto;
 }
 .o-header__menu-icon {
     position: absolute;
-    right: var(--gap-sm);
+    right: 0;
     padding: var(--gap-sm);
+    cursor: pointer;
 }
 
 

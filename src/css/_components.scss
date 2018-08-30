@@ -1,10 +1,8 @@
 
 // HEADINGS ========================================
 .c-heading-1 {
-    flex-grow: 1;
     font-size: 3.4rem;
     font-weight: 300;
-    text-align: center;
     @media (max-width: 420px) {
         //flex-grow: 0; // align left
         font-size: 3rem;
@@ -13,6 +11,10 @@
 
 
 // ICONS ========================================
+.c-icon-poop,
+.c-icon-poop--lost {
+    margin-top: 5px;
+}
 .c-icon-poop {
     position: relative;
     z-index: 1;
