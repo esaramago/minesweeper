@@ -255,7 +255,7 @@ const Minesweeper = {
         this.disableGrid();
         setTimeout(() => {
             _this.enableGrid();
-        }, 80);
+        }, 60);
 
         if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
 
