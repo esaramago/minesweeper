@@ -19,7 +19,7 @@ const Minesweeper = {
     },
 
     // constants
-    minesNumber: 15,
+    minesNumber: 5,
     gridRows: 8,
     longPressTime: 400,
 
@@ -273,8 +273,8 @@ const Minesweeper = {
                 this.elements.restart.textContent = this.content.restart; // set restart text
                 document.body.classList.add('is-lost');
 
-                
                 this.levelCurrent = 1; // back to level 1
+                this.minesNumber = 5; // back to level 1 difficulty
                 
             }
             else {
@@ -295,7 +295,9 @@ const Minesweeper = {
                         this.levelBest = this.levelCurrent;
                         localStorage.setItem('levelBest', this.levelCurrent);
                     }
-                    ++this.levelCurrent;
+
+                    ++this.levelCurrent; // add one level
+                    this.minesNumber = this.minesNumber + 2; // increase difficulty (nr of mines)
 
                 }
             }
