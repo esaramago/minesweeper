@@ -63,7 +63,7 @@ const Minesweeper = {
         this.renderGrid();
     },
 
-    // Set
+    //#region SET
     setMines() {
 
         const that = this;
@@ -164,8 +164,10 @@ const Minesweeper = {
             }
         }
     },
+    //#endregion SET
 
-    // render
+
+    //#region RENDER
     revealCell(btn) {
 
         var row = btn.dataset.row;
@@ -232,8 +234,10 @@ const Minesweeper = {
             this.elements.levelBestContainer.removeAttribute('hidden');
         }
     },
+    //#endregion RENDER
 
-    // events
+
+    //#region EVENTS
     onPressCell(e) {
 
         this.longPress = false;
@@ -245,6 +249,13 @@ const Minesweeper = {
         }
     },
     onLeaveCell(e) {
+
+        // prevent tap more than one cell at the same time
+        var _this = this;
+        this.disableGrid();
+        setTimeout(() => {
+            _this.enableGrid();
+        }, 110);
 
         if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
 
@@ -258,7 +269,7 @@ const Minesweeper = {
                     this.revealCell(e);
                 });
                 
-                _disableGrid();
+                this.disableGrid();
                 this.elements.restart.textContent = this.content.restart; // set restart text
                 document.body.classList.add('is-lost');
 
@@ -275,7 +286,7 @@ const Minesweeper = {
                     // GAME WON!!!
                     this.isWon = true;
                     
-                    _disableGrid();
+                    this.disableGrid();
                     this.elements.restart.textContent = this.content.nextLevel; // set restart text
                     document.body.classList.add('is-won');
 
@@ -292,9 +303,6 @@ const Minesweeper = {
 
         clearTimeout(this.delay);
 
-        function _disableGrid() {
-            document.getElementById('grid').classList.add('is-disabled');
-        }
 
     },
 
@@ -307,7 +315,18 @@ const Minesweeper = {
         document.body.classList.remove('is-won');
 
         this.start();
+    },
+    //#endregion EVENTS
+
+
+    //#region GENERAL
+    disableGrid() {
+        this.elements.grid.classList.add('is-disabled');
+    },
+    enableGrid() {
+        this.elements.grid.classList.remove('is-disabled');
     }
+    //#endregion GENERAL
 }
 Minesweeper.init();
 
