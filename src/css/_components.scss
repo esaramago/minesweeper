@@ -77,6 +77,7 @@
 .c-grid {
     --grid-border: 2px solid var(--color-bg);
 
+    position: relative;
     display: grid;
     width: 400px;
     height: 400px;

@@ -27,6 +27,41 @@ const Minesweeper = {
     levelCurrent: 1,
     levelBest: null,
 
+    positions: [
+        { // top
+            row(row) { return row - 1 },
+            col(col) { return col }
+        },
+        { // topRight
+            row(row) { return row - 1 },
+            col(col) { return col + 1 }
+        },
+        { // right
+            row(row) { return row },
+            col(col) { return col + 1 }
+        },
+        { // rightBottom
+            row(row) { return row + 1 },
+            col(col) { return col + 1 }
+        },
+        { // bottom
+            row(row) { return row + 1 },
+            col(col) { return col }
+        },
+        { // bottomLeft
+            row(row) { return row + 1 },
+            col(col) { return col - 1 }
+        },
+        { // left
+            row(row) { return row },
+            col(col) { return col - 1 }
+        },
+        { // leftTop
+            row(row) { return row - 1 },
+            col(col) { return col - 1 }
+        },
+    ],
+
     init() {
         // set grid styles
         this.elements.grid.style.gridTemplateColumns = `repeat(${this.gridRows}, 1fr)`;
@@ -118,48 +153,13 @@ const Minesweeper = {
     },
     setPositions(row, col) {
 
-        var positions = [
-            { // top
-                row(row) {return row-1},
-                col(col) {return col}
-            },
-            { // topRight
-                row(row) {return row-1},
-                col(col) {return col+1}
-            },
-            { // right
-                row(row) {return row},
-                col(col) {return col+1}
-            },
-            { // rightBottom
-                row(row) {return row+1},
-                col(col) {return col+1}
-            },
-            { // bottom
-                row(row) {return row+1},
-                col(col) {return col}
-            },
-            { // bottomLeft
-                row(row) {return row+1},
-                col(col) {return col-1}
-            },
-            { // left
-                row(row) {return row},
-                col(col) {return col-1}
-            },
-            { // leftTop
-                row(row) {return row-1},
-                col(col) {return col-1}
-            },
-        ];
-
-        for (let i = 0; i < positions.length; i++) {
-            const pos = positions[i];
+        for (let i = 0; i < this.positions.length; i++) {
+            const pos = this.positions[i];
 
             var rowPos = pos.row(row);
             var colPos = pos.col(col);
 
-            if (rowPos > -1 & rowPos < this.gridRows && colPos > -1 && colPos < this.gridRows) {// check if cell is inside the grid
+            if (this.isCellInsideGrid(rowPos, colPos)) {// check if cell is inside the grid
                 this.grid[rowPos][colPos].number++;
             }
         }
@@ -169,27 +169,60 @@ const Minesweeper = {
 
     //#region RENDER
     revealCell(btn) {
+        var _this = this;
 
-        var row = btn.dataset.row;
-        var col = btn.dataset.col;
+        var row = parseInt(btn.dataset.row);
+        var col = parseInt(btn.dataset.col);
 
         var html = '';
         var cell = this.grid[row][col];
-        if (cell.hasMine) {
+
+        if (cell.hasMine) { // Lost
             btn.classList.add('has-mine');
             this.isLost = true;
         }
-        else if (cell.number > 0) {
+        else if (cell.number > 0) { // has number
             html = this.renderCellContent(cell.number);
         }
+        else { // is empty
 
-        btn.classList.add('is-revealed');
-        btn.innerHTML = html;
-        btn.disabled = true;
+            for (let i = 0; i < this.positions.length; i++) {
+                var pos = this.positions[i];
+
+                var rowPos = pos.row(row);
+                var colPos = pos.col(col);
+
+                if (this.isCellInsideGrid(rowPos, colPos)) {// check if cell is inside the grid
+                    var btnX = this.elements.grid.querySelector(`[data-row="${rowPos}"][data-col="${colPos}"]`);
+                    if (btnX) {
+                        var isRevealed = btnX.classList.contains('is-revealed');
+                        if (!isRevealed) {
+
+                            // reveal cell
+                            var cellX = this.grid[rowPos][colPos];
+                            var htmlX = this.renderCellContent(cellX.number);
+                            _render(btnX, htmlX);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        _render(btn, html);
+
+        function _render(btn, html) {
+            // reveal cell
+            btn.classList.add('is-revealed');
+            btn.innerHTML = html;
+            btn.disabled = true;
+            _this.revealedCells++; // add one revealed cell
+        }
 
     },
-    renderCellContent(content) {
-        return `<span>${content}</span>`
+    renderCellContent(number) {
+        var number = number || ''; // prevent zeros
+        return `<span>${number}</span>`
     },
 
     renderGrid() {
@@ -254,7 +287,8 @@ const Minesweeper = {
         var _this = this;
         this.disableGrid();
         setTimeout(() => {
-            _this.enableGrid();
+            if(!this.isLost && !this.isWon)
+                _this.enableGrid();
         }, 60);
 
         if (!this.longPress && e.target.matches('button') && !e.target.matches('.has-flag')) {
@@ -265,11 +299,12 @@ const Minesweeper = {
 
                 // GAME LOST :(
 
-                document.getElementById('grid').querySelectorAll('button').forEach(e => {
+                this.elements.grid.querySelectorAll('button').forEach(e => {
                     this.revealCell(e);
                 });
                 
                 this.disableGrid();
+
                 this.elements.restart.textContent = this.content.restart; // set restart text
                 document.body.classList.add('is-lost');
 
@@ -278,7 +313,6 @@ const Minesweeper = {
                 
             }
             else {
-                this.revealedCells++; // add one revealed cell
                 var totalCells = this.gridRows * this.gridRows; // get number of cells
                 var notRevealedCells = totalCells - this.minesNumber - this.revealedCells;
                 if (notRevealedCells === 0) {
@@ -327,6 +361,10 @@ const Minesweeper = {
     },
     enableGrid() {
         this.elements.grid.classList.remove('is-disabled');
+    },
+    isCellInsideGrid(rowPos, colPos) {
+        // check if cell with the given coordinates is inside the grid
+        return rowPos > -1 & rowPos < this.gridRows && colPos > -1 && colPos < this.gridRows;
     }
     //#endregion GENERAL
 }
