@@ -5,6 +5,7 @@
 html,
 body {
     height: 100%;
+    touch-action: none; // prevent pull down to refresh
 }
 html {
     font-size: 62.5%;
