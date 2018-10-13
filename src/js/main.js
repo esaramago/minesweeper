@@ -91,48 +91,46 @@ const Minesweeper = {
         this.mines = [];
         this.grid = [];
         this.levelBest = localStorage.getItem('levelBest');
+        this.isFirstMove = true;
+        this.maxCoordinate = this.gridRows - 1;
 
         this.renderLevels();
-        this.setMines();
+        
+        // add random mines
+        for (let i = 0; i < this.minesNumber; i++) {
+            this.addMine();
+        }
+
         this.setGrid();
         this.renderGrid();
     },
 
     //#region SET
-    setMines() {
+    addMine() {
 
-        const that = this;
+        const _this = this;
 
-        // add random mines
-        var min = 0;
-        var max = this.gridRows - 1;
-        for (let i = 0; i < this.minesNumber; i++) {
-            _addMine();
-        }
+        var row = _randomIntFromInterval();
+        var col = _randomIntFromInterval();
 
-        function _addMine() {
-            var row = _randomIntFromInterval(min, max);
-            var col = _randomIntFromInterval(min, max);
+        // check if is repeated
+        var isRepeated = this.mines.findIndex(x => {
+            return x.row == row && x.col == col
+        });
 
-            // check if is repeated
-            var isRepeated = that.mines.findIndex(x => {
-                return x.row == row && x.col == col
+        // push to array if is not repeated
+        if (isRepeated < 0) {
+            this.mines.push({
+                row: row,
+                col: col
             });
-
-            // push to array if is not repeated
-            if (isRepeated < 0) {
-                that.mines.push({
-                    row: row,
-                    col: col
-                });
-            }
-            else {
-                _addMine(); // run function until mine position is not repeated
-            }
+        }
+        else {
+            this.addMine(); // run function until mine position is not repeated
         }
 
-        function _randomIntFromInterval(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) + min);
+        function _randomIntFromInterval() {
+            return Math.floor(Math.random() * (_this.maxCoordinate - 0 + 1) + 0); // 0 == min coordinate
         }
     },
     setGrid() {
@@ -169,48 +167,72 @@ const Minesweeper = {
 
     //#region RENDER
     revealCell(btn) {
-        var _this = this;
 
+        var _this = this;
         var row = parseInt(btn.dataset.row);
         var col = parseInt(btn.dataset.col);
-
+        
         var html = '';
         var cell = this.grid[row][col];
 
-        if (cell.hasMine) { // Lost
-            btn.classList.add('has-mine');
-            this.isLost = true;
+        if (cell.hasMine) {
+
+            // prevent to loose on first move
+            if (this.isFirstMove) {
+
+                // remove mine
+                var indexOfMine = this.mines.findIndex(x => x.row === row && x.col === col);
+                this.mines.splice(indexOfMine, 1);
+
+                // change the position of the mine
+                this.addMine();
+
+                // restart
+                this.grid = [];
+                this.setGrid();
+                this.renderGrid();
+
+                var btn = this.elements.grid.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+                this.revealCell(btn);
+            }
+            else {
+                // Lost :( !!!
+                btn.classList.add('has-mine');
+                this.isLost = true;
+            }
         }
         else if (cell.number > 0) { // has number
             html = this.renderCellContent(cell.number);
         }
         else { // is empty
-
+            
             for (let i = 0; i < this.positions.length; i++) {
                 var pos = this.positions[i];
-
+                
                 var rowPos = pos.row(row);
                 var colPos = pos.col(col);
-
+                
                 if (this.isCellInsideGrid(rowPos, colPos)) {// check if cell is inside the grid
                     var btnX = this.elements.grid.querySelector(`[data-row="${rowPos}"][data-col="${colPos}"]`);
                     if (btnX) {
                         var isRevealed = btnX.classList.contains('is-revealed');
                         if (!isRevealed) {
-
+                            
                             // reveal cell
                             var cellX = this.grid[rowPos][colPos];
                             var htmlX = this.renderCellContent(cellX.number);
                             _render(btnX, htmlX);
                         }
                     }
-
+                    
                 }
             }
         }
 
         _render(btn, html);
 
+        this.isFirstMove = false;
+        
         function _render(btn, html) {
             // reveal cell
             btn.classList.add('is-revealed');
